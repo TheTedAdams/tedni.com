@@ -1,0 +1,154 @@
+/*
+----------------------------------------------------------------
+  # Parallax
+    http://keithclark.co.uk/articles/pure-css-parallax-websites/
+----------------------------------------------------------------
+*/
+
+//  body                  -
+//    .parallax           - $perspective (the depth of the layout).
+//      .parallax-group   - The relative container; sets the height.
+//        .parallax-layer - Transforms the layer according to a depth position in a tridimensional level; 
+//                          The tridimensional level must be an interger number of $z-levels.
+//                          Sets the top position from it's parent.```
+
+// ## Variables
+//---------------
+
+$perspective: 600px;
+$z-levels: 5;    // It must be an odd number because of middle number, which is at the zero depth level.
+$z-depth: 300px; // Cannot be greater than `$perspective`.
+
+// ## Mixin
+//-----------
+
+@mixin parallax-depth($z-axis) {
+  $part: ($z-depth * 2) / ($z-levels - 1);
+  $depth: - $z-depth + ($part * ($z-axis - 1));
+  $scale: 1 + ($depth * -1) / $perspective;
+  -webkit-transform: translate3d(0,0,$depth) scale($scale);
+  -moz-transform: translate3d(0,0,$depth) scale($scale);
+  transform: translate3d(0,0,$depth) scale($scale); // Enables GPU.
+  -webkit-transform-origin: center center;
+  -moz-transform-origin: center center;
+  transform-origin: center center;
+  z-index: $z-axis;
+}
+
+// ## SCSS
+//----------
+
+.parallax {
+  -webkit-perspective: $perspective;
+  -moz-perspective: $perspective;
+  perspective: $perspective;
+  // -webkit-overflow-scrolling: touch; // Allows smooth scrolling on mobile devices but disables parallax effects.
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  width: 100%;
+  z-index: 1;
+}
+
+.parallax-group {
+  position: relative;
+  min-height: 100vh; // 🃏 Each `.parallax-group` must have a fixed height. Watch out for dinamic heights.
+  -webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+
+  &.parallax-group--short {
+    height: 50vh;
+  }
+
+  &.top {
+    filter: drop-shadow(0 0 6px #000);
+    z-index: 1;
+  }
+}
+
+%parallax-layer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+@for $i from 1 through $z-levels {
+  .parallax-layer-#{$i} {
+    @extend %parallax-layer;
+    @include parallax-depth($i);
+  }
+}
+
+// .parallax-layer-five {
+//   @extend %parallax-layer;
+//   @include parallax-depth(5);
+//   // top: x; // 🃏
+// }
+
+// .parallax-layer-four {
+//   @extend %parallax-layer;
+//   @include parallax-depth(4);
+//   // top: x; // 🃏
+// }
+
+// .parallax-layer-three {
+//   @extend %parallax-layer;
+//   @include parallax-depth(3);
+//   // top: x; // 🃏
+// }
+
+// .parallax-layer-two {
+//   @extend %parallax-layer;
+//   @include parallax-depth(2);
+//   // top: x; // 🃏
+// }
+
+// .parallax-layer-one {
+//   @extend %parallax-layer;
+//   @include parallax-depth(1);
+//   // top: x; // 🃏
+// }
+
+// ## Debug
+//-----------
+
+// .parallax-group {
+//   -webkit-transform: translate3d(700px,0,-800px) rotateY(30deg);
+//   -moz-transform: translate3d(700px,0,-800px) rotateY(30deg);
+//   transform: translate3d(700px,0,-800px) rotateY(30deg);
+// }
+
+// ## IE Fix
+//------------
+
+html[class*="ie"] {
+  body {
+    .parallax {
+      perspective: none;
+      height: auto;
+
+      .parallax-group {
+        transform-style: none;
+
+        .parallax-layer-front-five,
+        .parallax-layer-five,
+        .parallax-layer-front-four,
+        .parallax-layer-four,
+        .parallax-layer-base,
+        .parallax-layer-three,
+        .parallax-layer-back-two,
+        .parallax-layer-two,
+        .parallax-layer-back-one,
+        .parallax-layer-one {
+          -ms-transform: translate3d(0,0,0) scale(1) !important;
+          transform: translate3d(0,0,0) scale(1) !important;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,30 @@
+@font-face {
+  font-family: 'Slim Joe';
+  src: url('../fonts/Slim Joe.otf');
+}
+
+@font-face {
+  font-family: 'Big John';
+  src: url('../fonts/BIG JOHN.otf');
+}
+
+body {
+  color: #222;
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  letter-spacing: .5px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: $fig;
+}
+
+h1 { font-size: 3em; margin: .75em 0; }
+
+p { line-height: 2em; }
+i { font-style: italic; }
