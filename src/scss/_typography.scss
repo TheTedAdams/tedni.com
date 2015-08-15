@@ -9,7 +9,7 @@
 }
 
 body {
-  color: #222;
+  color: $dark;
   font-family: 'Roboto', sans-serif;
   font-size: 14px;
   letter-spacing: .5px;
@@ -28,3 +28,9 @@ h1 { font-size: 3em; margin: .75em 0; }
 
 p { line-height: 2em; }
 i { font-style: italic; }
+
+a {
+  text-decoration: none;
+  color: $fig;
+  border-bottom: 1px solid $fig;
+}
