@@ -213,8 +213,10 @@ footer:after {
 
 .link-list {
   li {
+    display: block;
+    padding: 10px 0 10px 10px;
     position: relative;
-    padding-left: 10px;
+    transition: all .3s;
 
     &::before {
       content: '\b7';
@@ -226,18 +228,6 @@ footer:after {
       position: absolute;
       left: 0;
       top: 10px;
-    }
-
-    a {
-      display: block;
-      padding: 10px 0;
-      transition: all .3s;
-      border-bottom: none;
-      text-decoration: underline;
-
-      &:not(:hover) {
-        color: inherit;
-      }
     }
   } 
 }
